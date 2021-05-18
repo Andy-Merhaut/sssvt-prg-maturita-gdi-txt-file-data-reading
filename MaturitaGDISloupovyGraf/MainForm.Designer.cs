@@ -41,6 +41,7 @@ namespace MaturitaGDISloupovyGraf
             this.MainPictureBox.Size = new System.Drawing.Size(1037, 601);
             this.MainPictureBox.TabIndex = 0;
             this.MainPictureBox.TabStop = false;
+            this.MainPictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.MainPictureBox_Paint);
             // 
             // MainForm
             // 
