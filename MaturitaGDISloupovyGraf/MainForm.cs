@@ -12,9 +12,13 @@ namespace MaturitaGDISloupovyGraf
 {
     public partial class MainForm : Form
     {
+        private string _cestaKSouboru = @"D:\OneDrives\Školní\OneDrive - Soukromá střední škola výpočetní techniky\Maturitní ročník\PRG\MaturitaGDISloupovyGraf\MaturitaGDISloupovyGraf\text.txt";
+        private string[] _pripravenaData;
+
         public MainForm()
         {
             InitializeComponent();
+            this._pripravenaData = this.PripravenaData(_cestaKSouboru);
         }
 
         private string[] PripravenaData(string cestaKSouboru)
@@ -38,18 +42,17 @@ namespace MaturitaGDISloupovyGraf
             int meritko1 = 15;
             int meritko2 = 48;
 
-            string cestaKSouboru = @"D:\OneDrives\Školní\OneDrive - Soukromá střední škola výpočetní techniky\Maturitní ročník\PRG\MaturitaGDISloupovyGraf\MaturitaGDISloupovyGraf\text.txt";
-            string[] pripravenaData = this.PripravenaData(cestaKSouboru);
+            
             int posunPoX = 20;
 
 
             NakresliCaru(e.Graphics, pero, sirkaPictureBoxu - sirkaPictureBoxu, vyskaPictureBoxu / 2, sirkaPictureBoxu, vyskaPictureBoxu / 2);
             NakresliCaru(e.Graphics, pero, sirkaPictureBoxu / 2, vyskaPictureBoxu - vyskaPictureBoxu, sirkaPictureBoxu / 2, vyskaPictureBoxu);
 
-            for (int i = 0; i < pripravenaData.Length ; i++)
+            for (int i = 0; i < this._pripravenaData.Length ; i++)
             {
-                NakresliCaru(e.Graphics, pero, (sirkaPictureBoxu / 2) + posunPoX, (vyskaPictureBoxu / 2) - int.Parse(pripravenaData[i]) , (sirkaPictureBoxu / 2) + posunPoX, vyskaPictureBoxu / 2);
-                e.Graphics.DrawString(pripravenaData[i], pismo, stetec, (sirkaPictureBoxu / 2) + posunPoX - 10, (vyskaPictureBoxu / 2) + 10);
+                NakresliCaru(e.Graphics, pero, (sirkaPictureBoxu / 2) + posunPoX, (vyskaPictureBoxu / 2) - int.Parse(this._pripravenaData[i]) , (sirkaPictureBoxu / 2) + posunPoX, vyskaPictureBoxu / 2);
+                e.Graphics.DrawString(this._pripravenaData[i], pismo, stetec, (sirkaPictureBoxu / 2) + posunPoX - 10, (vyskaPictureBoxu / 2) + 10);
                 posunPoX += 20;
             }
         }
@@ -57,6 +60,18 @@ namespace MaturitaGDISloupovyGraf
         private static void NakresliCaru(Graphics grafika, Pen pero, int zacatekX, int zacatekY, int konecX, int konecY)
         {
             grafika.DrawLine(pero, zacatekX, zacatekY, konecX, konecY);
+        }
+
+        private void ExportButton_Click(object sender, EventArgs e)
+        {
+            ExportDataForm exportDataForm = new ExportDataForm();
+            exportDataForm.Data = this.PripravenaData(_cestaKSouboru);
+            
+            if (exportDataForm.ShowDialog() == DialogResult.OK)
+            {
+                this._pripravenaData = exportDataForm.Data;
+                this.MainPictureBox.Refresh();
+            }
         }
     }
 }
